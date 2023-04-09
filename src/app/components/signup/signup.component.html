@@ -1,0 +1,130 @@
+<div class="d-flex">
+  <div class="image-section w-50">
+    <div
+      class="layer d-flex flex-column justify-content-center px-5 text-white"
+    >
+      <h2>welcome to our page</h2>
+    </div>
+  </div>
+  <div class="content">
+    <h1>SingUp</h1>
+    <form [formGroup]="signForm" (ngSubmit)="signUp()">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label> name</mat-label>
+        <input matInput formControlName="username" />
+        <mat-error *ngIf="signForm?.controls.username?.errors?.required">
+          username required
+        </mat-error>
+        <mat-error *ngIf="signForm?.controls.username?.errors?.pattern">
+          user must use English char only
+        </mat-error>
+      </mat-form-field>
+
+      <!------------ nationality ------------->
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>nationality</mat-label>
+        <mat-select formControlName="nationality">
+          <mat-option
+            *ngFor="let option of allCountries$ | async"
+            [value]="option.countryName"
+            >{{ option.countryName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="signForm?.controls.nationality?.errors?.required"
+          >nationality required</mat-error
+        >
+      </mat-form-field>
+
+      <!------------ Email ------------->
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>email</mat-label>
+        <input matInput formControlName="email" placeholder="email" />
+        <mat-error *ngIf="signForm?.controls.email?.errors?.required">
+          email required
+        </mat-error>
+        <mat-error *ngIf="signForm?.controls.email?.errors?.email">
+          enter Valid Email</mat-error
+        >
+      </mat-form-field>
+      <!------------ password ------------->
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          placeholder="Password"
+          [type]="hide ? 'password' : 'text'"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="
+            signForm?.controls.password.touched &&
+            signForm?.controls.password.invalid
+          "
+        >
+          {{ passwordErrorMessage }}
+        </mat-error>
+      </mat-form-field>
+      <!------------  CONFIRM password ------------->
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>confirmPassword</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          placeholder="confirmPassword"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hideConfirm = !hideConfirm"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hideConfirm"
+        >
+          <mat-icon>{{
+            hideConfirm ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="
+            signForm?.controls.confirmPassword.touched &&
+            signForm?.controls.confirmPassword.invalid
+          "
+        >
+          {{ passwordErrorMessage }}
+        </mat-error>
+        <mat-hint *ngIf="signForm.hasError('notmatch')"> notmatch</mat-hint>
+      </mat-form-field>
+      <!------------ Ip Address ------------->
+
+      <mat-form-field class="w-100 mt-2" appearance="outline">
+        <mat-label> Ip Address</mat-label>
+        <input matInput formControlName="ipAddress" placeholder=" Ip Address" />
+      </mat-form-field>
+      <div class="w-100">
+        <button
+        mat-raised-button
+        [ngClass]="{ validStyle: signForm.valid }"
+        [disabled]="signForm.invalid"
+        class="w-100 py-1"
+        type="submit"
+        >
+          signup
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
